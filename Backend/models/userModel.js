@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "recruiter"],
       required: true,
     },
+    refreshToken: {
+      type: String,
+      default: "",
+    },
     profile: {
       bio: {
         type: String,
@@ -65,6 +69,16 @@ userSchema.pre("save", async function (next) {
 // Compare plain password with hashed password
 userSchema.methods.comparePassword = async function (plainPassword) {
   return await bcrypt.compare(plainPassword, this.password);
+};
+
+// Create a static login method for centralized login logic
+userSchema.statics.login = async function (email, password) {
+  const user = await this.findOne({ email }).select("+password");
+  if (!user) throw new Error("Invalid email or password");
+
+  const isMatch = await user.comparePassword(password);
+  if (!isMatch) throw new Error("Invalid email or password");
+  return user;
 };
 
 const User = mongoose.model("User", userSchema);
