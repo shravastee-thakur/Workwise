@@ -61,7 +61,7 @@ export const login = async (req, res) => {
         secure: true,
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })
-      .json({ accessToken: newaccessToken });
+      .json({ accessToken: newaccessToken, id: user._id });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ success: false, message: "Invalid token" });
@@ -76,7 +76,6 @@ export const logout = async (req, res) => {
     const user = await User.findOne({ refreshToken: token });
     if (user) {
       (user.refreshToken = ""), await user.save();
-      console.log(`User ${user._id} logged out`);
     }
 
     res.clearCookie("refreshToken", {
@@ -90,5 +89,66 @@ export const logout = async (req, res) => {
     return res
       .status(500)
       .json({ success: false, message: "Something went wrong" });
+  }
+};
+
+export const updateProfile = async (req, res) => {
+  try {
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({
+        success: false,
+        message: "Not authorized - please log in",
+      });
+    }
+
+    const userId = req.user.id;
+
+    const { name, phoneNumber, bio, skills } = req.body;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const updateData = {};
+    if (name) updateData.name = name;
+    if (phoneNumber) updateData.phoneNumber = phoneNumber;
+    if (bio || skills) {
+      updateData.profile = {};
+      if (bio) updateData.profile.bio = bio;
+      if (skills) updateData.profile.skills = skills;
+    }
+
+    const updateProfile = await User.findByIdAndUpdate(userId, updateData, {
+      new: true,
+      runValidators: true,
+    }).select("-password -refreshToken");
+
+    if (!updateProfile) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        name: updateProfile.name,
+        phoneNumber: updateProfile.phoneNumber,
+        profile: {
+          bio: updateProfile.profile.bio,
+          skills: updateProfile.profile.skills,
+        },
+      },
+      message: "Profile updated successfully",
+    });
+  } catch (error) {
+    console.error("Update profile error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error updating profile",
+      error: error.message,
+    });
   }
 };

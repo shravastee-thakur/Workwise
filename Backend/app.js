@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
+import userRoute from "./routes/userRoute.js";
 const app = express();
 
 //Middlewares
@@ -24,5 +25,7 @@ const limiter = rateLimit({
 app.use(limiter);
 
 //Routes
+app.use("/api/v1/user", userRoute);
+// http://localhost:3000/api/v1/user/register
 
 export default app;
