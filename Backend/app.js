@@ -4,6 +4,7 @@ import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import userRoute from "./routes/userRoute.js";
+import companyRoute from "./routes/companyRoute.js";
 const app = express();
 
 //Middlewares
@@ -27,5 +28,7 @@ app.use(limiter);
 //Routes
 app.use("/api/v1/user", userRoute);
 // http://localhost:3000/api/v1/user/register
+app.use("/api/v1/company", companyRoute);
+// http://localhost:3000/api/v1/company/registerCompany
 
 export default app;

@@ -13,6 +13,8 @@ const jobSchema = new mongoose.Schema(
     requirements: [
       {
         type: String,
+        trim: true,
+        minlength: 2,
       },
     ],
     salary: {
@@ -49,5 +51,20 @@ const jobSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+jobSchema.pre(
+  "deleteOne",
+  { document: true, query: false },
+  async function (next) {
+    try {
+      const jobId = this._id;
+      await mongoose
+        .model("Application")
+        .deleteMany({ _id: { $in: this.applications } });
+      next();
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 const Job = mongoose.model("Job", jobSchema);
 export default Job;

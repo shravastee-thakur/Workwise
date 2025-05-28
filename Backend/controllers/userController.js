@@ -64,7 +64,9 @@ export const login = async (req, res) => {
       .json({ accessToken: newaccessToken, id: user._id });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ success: false, message: "Invalid token" });
+    return res
+      .status(500)
+      .json({ success: false, message: "Invalid email or password" });
   }
 };
 
@@ -113,11 +115,8 @@ export const updateProfile = async (req, res) => {
     const updateData = {};
     if (name) updateData.name = name;
     if (phoneNumber) updateData.phoneNumber = phoneNumber;
-    if (bio || skills) {
-      updateData.profile = {};
-      if (bio) updateData.profile.bio = bio;
-      if (skills) updateData.profile.skills = skills;
-    }
+    if (bio) updateData["profile.bio"] = bio;
+    if (skills) updateData["profile.skills"] = skills;
 
     const updateProfile = await User.findByIdAndUpdate(userId, updateData, {
       new: true,
