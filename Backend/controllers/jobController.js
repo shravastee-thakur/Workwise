@@ -1,6 +1,6 @@
 import Job from "../models/jobModel.js";
 
-export const postJob = async (req, res) => {
+export const postJob = async (req, res, next) => {
   try {
     const {
       title,
@@ -36,11 +36,11 @@ export const postJob = async (req, res) => {
       message: "New job created successfully.",
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-export const getAllJobs = async (req, res) => {
+export const getAllJobs = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const { search } = req.query;
@@ -73,11 +73,11 @@ export const getAllJobs = async (req, res) => {
       message: "Jobs fetched successfully",
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-export const getJobById = async (req, res) => {
+export const getJobById = async (req, res, next) => {
   try {
     const jobId = req.params.id;
 
@@ -88,11 +88,11 @@ export const getJobById = async (req, res) => {
 
     return res.status(200).json({ success: true, job });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-export const updateJob = async (req, res) => {
+export const updateJob = async (req, res, next) => {
   try {
     const jobId = req.params.id;
     const {
@@ -139,11 +139,11 @@ export const updateJob = async (req, res) => {
       message: "Jobs updated successfully",
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-export const deleteJob = async (req, res) => {
+export const deleteJob = async (req, res, next) => {
   try {
     const jobId = req.params.id;
 
@@ -165,6 +165,6 @@ export const deleteJob = async (req, res) => {
       message: "Job and related data deleted successfully",
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };

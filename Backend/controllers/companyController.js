@@ -1,6 +1,6 @@
 import Company from "../models/companyModel.js";
 
-export const registerCompany = async (req, res) => {
+export const registerCompany = async (req, res, next) => {
   try {
     const { name } = req.body;
     const userId = req.user.id;
@@ -19,11 +19,11 @@ export const registerCompany = async (req, res) => {
       message: "Company registered successfully.",
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-export const getCompany = async (req, res) => {
+export const getCompany = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const companies = await Company.find({ userId });
@@ -36,11 +36,11 @@ export const getCompany = async (req, res) => {
 
     return res.status(200).json({ success: true, companies });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-export const getCompanyById = async (req, res) => {
+export const getCompanyById = async (req, res, next) => {
   try {
     const companyId = req.params.id;
 
@@ -54,11 +54,11 @@ export const getCompanyById = async (req, res) => {
 
     return res.status(200).json({ success: true, company });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-export const updateCompany = async (req, res) => {
+export const updateCompany = async (req, res, next) => {
   try {
     const companyId = req.params.id;
     const { name, description, website, location, logo } = req.body;
@@ -96,6 +96,6 @@ export const updateCompany = async (req, res) => {
       message: "Company information updated.",
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };

@@ -5,6 +5,8 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import userRoute from "./routes/userRoute.js";
 import companyRoute from "./routes/companyRoute.js";
+import jobRoute from "./routes/jobRoute.js";
+import applicationRoute from "./routes/applicationRoute.js";
 const app = express();
 
 //Middlewares
@@ -30,5 +32,9 @@ app.use("/api/v1/user", userRoute);
 // http://localhost:3000/api/v1/user/register
 app.use("/api/v1/company", companyRoute);
 // http://localhost:3000/api/v1/company/registerCompany
+app.use("/api/v1/job", jobRoute);
+// http://localhost:3000/api/v1/job/postJob
+app.use("/api/v1/application", applicationRoute);
+// http://localhost:3000/api/v1/application/applyJob
 
 export default app;

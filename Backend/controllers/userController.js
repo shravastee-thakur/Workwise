@@ -4,7 +4,7 @@ import {
   generateRefreshToken,
 } from "../utils/tokenUtils.js";
 
-export const register = async (req, res) => {
+export const register = async (req, res, next) => {
   try {
     const { name, email, password, phoneNumber, role } = req.body;
 
@@ -34,14 +34,11 @@ export const register = async (req, res) => {
       message: "User registered successfully.",
     });
   } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .json({ success: false, message: "Something went wrong" });
+    next(error);
   }
 };
 
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
@@ -63,14 +60,11 @@ export const login = async (req, res) => {
       })
       .json({ accessToken: newaccessToken, id: user._id });
   } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .json({ success: false, message: "Invalid email or password" });
+    next(error);
   }
 };
 
-export const logout = async (req, res) => {
+export const logout = async (req, res, next) => {
   try {
     const token = req.cookies.refreshToken;
     if (!token) return res.sendStatus(204);
@@ -87,14 +81,11 @@ export const logout = async (req, res) => {
     });
     res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .json({ success: false, message: "Something went wrong" });
+    next(error);
   }
 };
 
-export const updateProfile = async (req, res) => {
+export const updateProfile = async (req, res, next) => {
   try {
     if (!req.user || !req.user.id) {
       return res.status(401).json({
@@ -143,11 +134,6 @@ export const updateProfile = async (req, res) => {
       message: "Profile updated successfully",
     });
   } catch (error) {
-    console.error("Update profile error:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Error updating profile",
-      error: error.message,
-    });
+    next(error);
   }
 };
