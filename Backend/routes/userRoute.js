@@ -10,6 +10,7 @@ import {
   registerValidation,
 } from "../validation/joiValidation.js";
 import { verifyUser } from "../middlewares/authMiddleware.js";
+import { allowRole } from "../middlewares/roleMiddleware.js";
 
 const router = express.Router();
 

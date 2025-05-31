@@ -6,7 +6,7 @@ export const registerValidation = (req, res, next) => {
     email: joi.string().trim().email().required(),
     password: joi.string().min(6).max(14).required(),
     phoneNumber: joi.string().required(),
-    role: joi.string().valid("admin", "user"),
+    role: joi.string().valid("recruiter", "user").required(),
   });
 
   const { error } = schema.validate(req.body);

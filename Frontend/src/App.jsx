@@ -1,12 +1,23 @@
-
-import Navbar from "./components/compo/Navbar";
-import Hero from "./components/compo/Hero";
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Navbar from "./component/Navbar";
+import Home from "./pages/Home";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import Footer from "./component/Footer";
 
 function App() {
   return (
-    <div>
-      <Navbar />
-      <Hero />
+    <div className="bg-[#f6f5fa] w-full h-full">
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+        <Footer />
+      </BrowserRouter>
     </div>
   );
 }
