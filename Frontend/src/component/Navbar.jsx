@@ -1,12 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 const Navbar = () => {
-  const user = false;
+  const { user, logout } = useContext(AuthContext);
   const Navigate = useNavigate();
 
   const handleClick = () => {
     Navigate("/login");
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    alert("Logged out successfully");
+    Navigate("/");
   };
   return (
     <div className="bg-[#d8ed99] pr-3">
@@ -22,7 +29,7 @@ const Navbar = () => {
             <NavLink to={"/"}>
               <li>Home</li>
             </NavLink>
-            <NavLink>
+            <NavLink to={"/findJobs"}>
               <li>Find Jobs</li>
             </NavLink>
             <NavLink>
@@ -32,7 +39,10 @@ const Navbar = () => {
         </div>
         {user ? (
           <div className="flex gap-2">
-            <button className="px-3 py-1 bg-amber-700 hover:bg-red-700 text-white rounded-md cursor-pointer">
+            <button
+              onClick={handleLogout}
+              className="px-3 py-1 bg-amber-700 hover:bg-red-700 text-white rounded-md cursor-pointer"
+            >
               Logout
             </button>
           </div>

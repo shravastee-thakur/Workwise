@@ -58,7 +58,7 @@ export const login = async (req, res, next) => {
         secure: true,
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })
-      .json({ accessToken: newaccessToken, id: user._id });
+      .json({ success: true, accessToken: newaccessToken, id: user._id });
   } catch (error) {
     next(error);
   }
@@ -79,7 +79,7 @@ export const logout = async (req, res, next) => {
       secure: true,
       sameSite: "strict",
     });
-    res.status(200).json({ message: "Logged out successfully" });
+    res.status(200).json({ success: true, message: "Logged out successfully" });
   } catch (error) {
     next(error);
   }

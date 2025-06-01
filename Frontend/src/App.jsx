@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Footer from "./component/Footer";
+import FindJobs from "./pages/FindJobs";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/findJobs" element={<FindJobs />} />
         </Routes>
         <Footer />
       </BrowserRouter>
