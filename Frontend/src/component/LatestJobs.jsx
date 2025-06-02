@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import JobCard from "./JobCard";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 const LatestJobs = () => {
   const Navigate = useNavigate();
-  const job = [1, 2, 3, 4, 5, 6];
+  const { fetchJobs } = useContext(AuthContext);
+
   const handleClick = () => {
     Navigate("/findJobs");
   };
@@ -15,13 +17,14 @@ const LatestJobs = () => {
       </h1>
 
       <div className="grid grid-cols-4 gap-10">
-        {job.slice(0, 4).map((index, job) => {
-          return (
-            <div key={index}>
-              <JobCard />
-            </div>
-          );
-        })}
+        {!fetchJobs ||
+          fetchJobs.map((job, index) => {
+            return (
+              <div key={job._id || index}>
+                <JobCard job={job} />
+              </div>
+            );
+          })}
       </div>
       <div className="flex justify-center items-center mt-15">
         <button

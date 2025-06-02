@@ -10,6 +10,10 @@ const Navbar = () => {
     Navigate("/login");
   };
 
+  const handleProfile = () => {
+    Navigate("/profile");
+  };
+
   const handleLogout = async () => {
     await logout();
     alert("Logged out successfully");
@@ -44,6 +48,12 @@ const Navbar = () => {
               className="px-3 py-1 bg-amber-700 hover:bg-red-700 text-white rounded-md cursor-pointer"
             >
               Logout
+            </button>
+            <button
+              onClick={handleProfile}
+              className="px-3 py-1 bg-green-600 hover:bg-green-800 text-white rounded-md cursor-pointer"
+            >
+              Profile
             </button>
           </div>
         ) : (
